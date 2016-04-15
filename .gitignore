@@ -1,0 +1,10 @@
+/.emacs.desktop
+/.emacs.desktop.lock
+/abbrev_defs
+/config.el
+/ido.last
+/init.el~
+/recentf
+auto-save-list/
+server/
+elpa/

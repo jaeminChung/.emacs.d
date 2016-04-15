@@ -1,0 +1,215 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: jmchung
+
+Boilerplate for a ~/.emacs.d/config.org emacs configuration using
+"Sane Defaults".
+
+gbSteps to making this file yours:
+
+1) Change all instances of "Your Name Here" to your name.
+2) Change all instances of "your@email.here" to your email address.
+3) Create ~/.emacs.d/custom.el even if it's empty.
+   Emacs will now write your (interactive) customizations to that
+   file. 
+4) Change the Sane Defaults if you need to. 
+   For example if you read and write Chinese and so prefer to default
+   to utf-16.
+5) Teach yourself what goes into your backup directories
+   ~/.emacs.d/backups
+   ~/.emacs.d/auto-save-list
+   So you'll know where to look for older versions of files that
+   you've edited. 
+6) Delete these instructions and replace them with a personalized
+   introduction. 
+
+* Personal Information
+
+#+begin_src emacs-lisp
+(setq user-full-name "jmchung"
+      user-mail-address "hijam76@gmail.com")
+#+end_src
+
+* Customize settings
+
+Set up the customize file to its own separate file, instead of saving
+customize settings in [[file:init.el][init.el]]. 
+
+#+begin_src emacs-lisp
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+#+end_src
+
+* Sane defaults
+
+Let's start with some sane defaults, shall we?
+
+Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
+
+#+begin_src emacs-lisp
+;; These functions are useful. Activate them.
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+
+;; Answering just 'y' or 'n' will do
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Keep all backup and auto-save files in one directory
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+;; UTF-8 please
+(setq-default file-name-coding-system 'euc-kr)
+;;(prefer-coding-system 'utf-8) ; with sugar on top
+;;(set-default-coding-systems 'utf-8)
+;;(set-terminal-coding-system 'utf-8) ; pretty
+;;(set-keyboard-coding-system 'utf-8) ; pretty
+;;(set-selection-coding-system 'utf-8) ; please
+;;(setq-default locale-coding-system 'utf-8) ; pretty
+;;(setq-default indent-tabs-mode nil)
+
+;; Turn off the blinking cursor
+(blink-cursor-mode -1)
+
+(setq-default indent-tabs-mode nil)
+(setq-default indicate-empty-lines t)
+
+;; Don't count two spaces after a period as the end of a sentence.
+;; Just one space is needed.
+(setq sentence-end-double-space nil)
+
+;; delete the region when typing, just like as we expect nowadays.
+(delete-selection-mode t)
+
+(show-paren-mode t)
+
+(column-number-mode t)
+
+(global-visual-line-mode)
+(diminish 'visual-line-mode)
+
+(setq uniquify-buffer-name-style 'forward)
+
+;; -i gets alias definitions from .bash_profile
+(setq shell-command-switch "-ic")
+
+;; Don't beep at me
+(setq visible-bell t)
+#+end_src
+
+The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
+[[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs]]. It takes the current region or the symbol
+at point as the default value for occur.
+
+#+begin_src emacs-lisp
+(defun occur-dwim ()
+  "Call `occur' with a sane default."
+  (interactive)
+  (push (if (region-active-p)
+            (buffer-substring-no-properties
+             (region-beginning)
+             (region-end))
+          (thing-at-point 'symbol))
+        regexp-history)
+  (call-interactively 'occur))
+
+(bind-key "M-s o" 'occur-dwim)
+#+end_src
+
+* hijam defaults
+- modeline
+#+BEGIN_SRC emacs-lisp
+  (powerline-default-theme)
+  ;; These two lines you really need.
+  (set-face-attribute 'mode-line nil
+                      :foreground "white"
+                      :background "grey40"
+                      :box nil)
+  ;; These two lines are just examples
+;  (setq powerline-arrow-shape 'curve)
+  (setq powerline-default-separator-dir '(right . left))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(autoload 'cobol-mode "cobol-mode" "A major mode for editing ANSI Cobol/Scobol files." t nil)
+
+(autoload 'vtl-mode "vtl" nil t)
+(add-hook 'html-mode-hook 'turn-on-vtl-mode t t)
+(add-hook 'xml-mode-hook 'turn-on-vtl-mode t t)
+(add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
+
+#+END_SRC
+- 단축키
+#+begin_src emacs-lisp
+  ;;shortcut
+  (bind-key* "<f2>" 'recentf-open-files)
+;  (global-set-key (kbd "<f2>") 'recentf-open-files)
+  (bind-key* "<C-return>" 'other-window)
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+   
+  (defalias 'list-buffers 'ibuffer) ; make ibuffer default
+  (windmove-default-keybindings 'meta)
+  
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
+    
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+#+end_src
+
+- 큰파일은 기본모드로
+#+BEGIN_SRC emacs-lisp
+  (defun my-find-file-check-make-large-file-read-only-hook ()
+    "if a file is over a given size, make the buffer read only."
+    (when (> (buffer-size) (* 1024 1024 1024))
+      (setq buffer-read-only t)
+      (buffer-disable-undo)
+      (fundamental-mode)))
+  
+  ;(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+#+END_SRC
+
+- eww에서 한자키로 그림숨기기
+#+BEGIN_SRC emacs-lisp
+(defvar-local endless/display-images t)
+
+(defun endless/toggle-image-display ()
+  "Toggle images display on current buffer."
+  (interactive)
+  (setq endless/display-images
+        (null endless/display-images))
+  (endless/backup-display-property endless/display-images))
+
+(defun endless/backup-display-property (invert &optional object)
+  "Move the 'display property at POS to 'display-backup.
+Only applies if display property is an image.
+If INVERT is non-nil, move from 'display-backup to 'display
+instead.
+Optional OBJECT specifies the string or buffer. Nil means current
+buffer."
+  (let* ((inhibit-read-only t)
+         (from (if invert 'display-backup 'display))
+         (to (if invert 'display 'display-backup))
+         (pos (point-min))
+         left prop)
+    (while (and pos (/= pos (point-max)))
+      (if (get-text-property pos from object)
+          (setq left 
+        (setq left (next-single-property-change pos from object)))
+      (if (or (null left) (= left (point-max)))
+          (setq pos nil)
+        (setq prop (get-text-property left from object))
+        (setq pos (or (next-single-property-change left from object)
+                      (point-max)))
+        (when (eq (car prop) 'image)
+          (add-text-properties left pos (list from nil to prop) object))))))
+(put 'erase-buffer 'disabled nil))
+(put 'dired-find-alternate-file 'disabled nil)
+
+(global-set-key [(kanji)] 'endless/toggle-image-display)
+#+END_SRC
+  
