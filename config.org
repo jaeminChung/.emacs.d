@@ -60,7 +60,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 ;; UTF-8 please
-(setq-default file-name-coding-system 'euc-kr)
+(setq-default file-name-coding-system 'utf-8)
 ;;(prefer-coding-system 'utf-8) ; with sugar on top
 ;;(set-default-coding-systems 'utf-8)
 ;;(set-terminal-coding-system 'utf-8) ; pretty
@@ -118,6 +118,20 @@ at point as the default value for occur.
 #+end_src
 
 * hijam defaults
+- auto complete
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
+#+END_SRC
+- slime
+#+BEGIN_SRC emacs-lisp
+(setq inferior-lisp-program "/usr/bin/clisp")
+#+END_SRC
 - modeline
 #+BEGIN_SRC emacs-lisp
   (powerline-default-theme)
@@ -142,23 +156,23 @@ at point as the default value for occur.
 #+END_SRC
 - 단축키
 #+begin_src emacs-lisp
-  ;;shortcut
-  (bind-key* "<f2>" 'recentf-open-files)
-;  (global-set-key (kbd "<f2>") 'recentf-open-files)
-  (bind-key* "<C-return>" 'other-window)
-  (global-set-key "\C-cl" 'org-store-link)
-  (global-set-key "\C-ca" 'org-agenda)
-  (global-set-key "\C-cb" 'org-iswitchb)
-   
-  (defalias 'list-buffers 'ibuffer) ; make ibuffer default
-  (windmove-default-keybindings 'meta)
-  
-  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-  (add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
+    ;;shortcut
+    (bind-key* "<f2>" 'recentf-open-files)
+  ;  (global-set-key (kbd "<f2>") 'recentf-open-files)
+    (bind-key* "<C-return>" 'other-window)
+    (global-set-key "\C-cl" 'org-store-link)
+    (global-set-key "\C-ca" 'org-agenda)
+    (global-set-key "\C-cb" 'org-iswitchb)
+
+    (defalias 'list-buffers 'ibuffer) ; make ibuffer default
+    (windmove-default-keybindings 'meta)
     
-  (require 'server)
-  (unless (server-running-p)
-    (server-start))
+    (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+    (add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
+      
+    (require 'server)
+    (unless (server-running-p)
+      (server-start))
 #+end_src
 
 - 큰파일은 기본모드로
