@@ -14,7 +14,6 @@
     ("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" default)))
  '(default-input-method "korean-hangul")
  '(desktop-save-mode t)
- '(global-linum-mode t)
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
  '(make-backup-files nil)
@@ -30,4 +29,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#181a26" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "outline" :family "D2Coding")))))
+ '(default ((t (:inherit nil :stipple nil :background "#181a26" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "outline" :family "D2Coding")))))

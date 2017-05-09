@@ -5,6 +5,10 @@
 /ido.last
 /init.el~
 /recentf
+/ac-comphist.dat
+eshell/
+games/
+url/
 auto-save-list/
 server/
 elpa/
