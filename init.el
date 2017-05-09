@@ -26,6 +26,9 @@
   (package-refresh-contents)
   (package-install 'powerline))
 
+(unless (package-installed-p 'magit)
+  (package-refresh-contents)
+  (package-install 'magit)
 (eval-when-compile
   (require 'use-package)
   (require 'powerline))

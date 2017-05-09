@@ -19,6 +19,7 @@
  '(make-backup-files nil)
  '(org-agenda-files (quote ("~/org/")))
  '(org-src-fontify-natively t)
+ '(package-selected-packages (quote (magit use-package slime powerline auto-complete)))
  '(recentf-mode t)
  '(show-paren-mode t)
  '(tab-width 4)
