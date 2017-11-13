@@ -28,7 +28,8 @@
 
 (unless (package-installed-p 'magit)
   (package-refresh-contents)
-  (package-install 'magit)
+  (package-install 'magit))
+
 (eval-when-compile
   (require 'use-package)
   (require 'powerline))
@@ -38,4 +39,8 @@
 
 ;;; Load the config
 (require 'org)
-(org-babel-load-file (concat user-emacs-directory "config.org")) 
+(org-babel-load-file (concat user-emacs-directory "config.org"))
+
+(set-frame-font "Monospace-11" nil t)
+(set-fontset-font t 'hangul (font-spec :name "D2Coding"))
+(setq-default line-spacing 0)

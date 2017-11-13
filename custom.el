@@ -19,15 +19,24 @@
  '(make-backup-files nil)
  '(org-agenda-files (quote ("~/org/")))
  '(org-src-fontify-natively t)
- '(package-selected-packages (quote (magit use-package slime powerline auto-complete)))
+ '(package-selected-packages
+   (quote
+    (markdown-mode use-package slime s powerline magit kv deferred dash-functional auto-complete)))
  '(recentf-mode t)
  '(show-paren-mode t)
  '(tab-width 4)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(tramp-syntax (quote default) nil (tramp)))
 
+;;(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+;; '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "outline" :family "Ubuntu Mono")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#181a26" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "outline" :family "D2Coding")))))
+ )
