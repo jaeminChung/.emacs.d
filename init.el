@@ -44,3 +44,19 @@
 (set-frame-font "Monospace-11" nil t)
 (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
 (setq-default line-spacing 0)
+
+(setq-default frame-title-format
+              '(:eval
+                (format "%s@%s: %s %s"
+                        (or (file-remote-p default-directory 'user)
+                            user-real-login-name)
+                        (or (file-remote-p default-directory 'host)
+                            system-name)
+                        (buffer-name)
+                        (cond
+                         (buffer-file-truename
+                          (concat "(" buffer-file-truename ")"))
+                         (dired-directory
+                          (concat "{" dired-directory "}"))
+                         (t
+                          "[no file]")))))
