@@ -41,7 +41,7 @@
 (require 'org)
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 
-(set-frame-font "Monospace-11" nil t)
+(set-frame-font "Ubuntu Mono-12" nil t)
 (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
 (setq-default line-spacing 0)
 
