@@ -22,17 +22,12 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(unless (package-installed-p 'powerline)
-  (package-refresh-contents)
-  (package-install 'powerline))
-
 (unless (package-installed-p 'magit)
   (package-refresh-contents)
-  (package-install 'magit)
+  (package-install 'magit))
 (eval-when-compile
   (require 'use-package)
   (require 'powerline))
-(require 'diminish)                ;; if you use :diminish
 (require 'bind-key)
 ;(setq use-package-verbose t)
 
