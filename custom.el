@@ -21,7 +21,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (markdown-mode use-package slime s powerline magit kv deferred dash-functional auto-complete)))
+    (which-key json-mode markdown-mode use-package slime s powerline magit kv deferred dash-functional auto-complete)))
  '(recentf-mode t)
  '(show-paren-mode t)
  '(tab-width 4)
