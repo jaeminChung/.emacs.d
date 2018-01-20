@@ -22,36 +22,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(unless (package-installed-p 'magit)
-  (package-refresh-contents)
-  (package-install 'magit))
-
 (eval-when-compile
-  (require 'use-package)
-  (require 'powerline))
+  (require 'use-package))
 (require 'bind-key)
 ;(setq use-package-verbose t)
 
 ;;; Load the config
 (require 'org)
 (org-babel-load-file (concat user-emacs-directory "config.org"))
-
-(set-frame-font "Ubuntu Mono-13" nil t)
-(set-fontset-font t 'hangul (font-spec :name "D2Coding"))
-(setq-default line-spacing 1)
-
-(setq-default frame-title-format
-              '(:eval
-                (format "%s@%s: %s %s"
-                        (or (file-remote-p default-directory 'user)
-                            user-real-login-name)
-                        (or (file-remote-p default-directory 'host)
-                            system-name)
-                        (buffer-name)
-                        (cond
-                         (buffer-file-truename
-                          (concat "(" buffer-file-truename ")"))
-                         (dired-directory
-                          (concat "{" dired-directory "}"))
-                         (t
-                          "[no file]")))))

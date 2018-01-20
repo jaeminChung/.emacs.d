@@ -66,6 +66,37 @@ customize settings in [[file:init.el][init.el]].
 #+end_src
 
 * hijam defaults
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'magit)
+  (package-refresh-contents)
+  (package-install 'magit))
+
+(set-frame-font "Ubuntu Mono-13" nil t)
+(set-fontset-font t 'hangul (font-spec :name "D2Coding"))
+(setq-default line-spacing 1)
+
+(setq-default frame-title-format
+              '(:eval
+                (format "%s@%s: %s %s"
+                        (or (file-remote-p default-directory 'user)
+                            user-real-login-name)
+                        (or (file-remote-p default-directory 'host)
+                            system-name)
+                        (buffer-name)
+                        (cond
+                         (buffer-file-truename
+                          (concat "(" buffer-file-truename ")"))
+                         (dired-directory
+                          (concat "{" dired-directory "}"))
+                         (t
+                          "[no file]")))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind("M-s" . avy-goto-char))
+#+END_SRC
 - which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -96,10 +127,6 @@ customize settings in [[file:init.el][init.el]].
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
-#+END_SRC
-- slime
-#+BEGIN_SRC emacs-lisp
-(setq inferior-lisp-program "/usr/bin/clisp")
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 (autoload 'cobol-mode "cobol-mode" "A major mode for editing ANSI Cobol/Scobol files." t nil)
