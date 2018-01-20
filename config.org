@@ -1,6 +1,5 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: jmchung
-
 * Personal Information
 
 #+begin_src emacs-lisp
@@ -20,10 +19,6 @@ customize settings in [[file:init.el][init.el]].
 
 * Sane defaults
 
-Let's start with some sane defaults, shall we?
-
-Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
-
 #+begin_src emacs-lisp
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
@@ -40,13 +35,6 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
 ;; UTF-8 please
 (setq-default file-name-coding-system 'utf-8)
-;;(prefer-coding-system 'utf-8) ; with sugar on top
-;;(set-default-coding-systems 'utf-8)
-;;(set-terminal-coding-system 'utf-8) ; pretty
-;;(set-keyboard-coding-system 'utf-8) ; pretty
-;;(set-selection-coding-system 'utf-8) ; please
-;;(setq-default locale-coding-system 'utf-8) ; pretty
-;;(setq-default indent-tabs-mode nil)
 
 ;; Turn off the blinking cursor
 (blink-cursor-mode -1)
@@ -99,7 +87,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
       (global-auto-complete-mode t)
       ))
 #+END_SRC
-- markdown mode
+- markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :ensure t
@@ -108,6 +96,10 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
+#+END_SRC
+- slime
+#+BEGIN_SRC emacs-lisp
+(setq inferior-lisp-program "/usr/bin/clisp")
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 (autoload 'cobol-mode "cobol-mode" "A major mode for editing ANSI Cobol/Scobol files." t nil)
@@ -126,7 +118,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
     (bind-key* "<C-return>" 'other-window)
 
     (defalias 'list-buffers 'ibuffer) ; make ibuffer default
-    (windmove-default-keybindings 'meta)
+    ;(windmove-default-keybindings 'meta)
     
     (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
     (add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
@@ -143,4 +135,3 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
   
   ;(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
 #+END_SRC
-
