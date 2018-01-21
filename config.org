@@ -1,13 +1,14 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: jmchung
-* Personal Information
+* 기본설정
+** Personal Information
 
 #+begin_src emacs-lisp
 (setq user-full-name "jmchung"
       user-mail-address "hijam76@gmail.com")
 #+end_src
 
-* Customize settings
+** Customize settings
 
 Set up the customize file to its own separate file, instead of saving
 customize settings in [[file:init.el][init.el]]. 
@@ -17,7 +18,7 @@ customize settings in [[file:init.el][init.el]].
 (load custom-file)
 #+end_src
 
-* Sane defaults
+** Sane defaults
 
 #+begin_src emacs-lisp
 ;; These functions are useful. Activate them.
@@ -65,16 +66,22 @@ customize settings in [[file:init.el][init.el]].
 (setq visible-bell t)
 #+end_src
 
-* hijam defaults
+* 내 설정
+** Magit
 #+BEGIN_SRC emacs-lisp
-(unless (package-installed-p 'magit)
-  (package-refresh-contents)
-  (package-install 'magit))
+  (use-package magit
+    :ensure t)
+#+END_SRC
 
+** 폰트설정
+#+BEGIN_SRC emacs-lisp
 (set-frame-font "Ubuntu Mono-13" nil t)
 (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
 (setq-default line-spacing 1)
+#+END_SRC
 
+** 타이틀에 경로표시
+#+BEGIN_SRC emacs-lisp
 (setq-default frame-title-format
               '(:eval
                 (format "%s@%s: %s %s"
@@ -90,25 +97,30 @@ customize settings in [[file:init.el][init.el]].
                           (concat "{" dired-directory "}"))
                          (t
                           "[no file]")))))
+
 #+END_SRC
 
+** avy M-s로 글자찾기 빠르게
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
     :bind("M-s" . avy-goto-char))
 #+END_SRC
-- which-key
+
+** which-key 단축키 자동완성
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
     :init
     (which-key-mode))
 #+END_SRC
-- C-c C-p
+
+** python 인터프리터 설정
 #+BEGIN_SRC emacs-lisp
   (setq python-shell-interpreter "python3")
 #+END_SRC
-- auto complete
+
+** auto complete 자동완성
 #+BEGIN_SRC emacs-lisp
   (use-package auto-complete
     :ensure t
@@ -118,7 +130,8 @@ customize settings in [[file:init.el][init.el]].
       (global-auto-complete-mode t)
       ))
 #+END_SRC
-- markdown
+
+** markdown mode
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :ensure t
@@ -128,16 +141,21 @@ customize settings in [[file:init.el][init.el]].
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
 #+END_SRC
-#+BEGIN_SRC emacs-lisp
+
+** cobol mode, velocity mode
+-#+BEGIN_SRC emacs-lisp
 (autoload 'cobol-mode "cobol-mode" "A major mode for editing ANSI Cobol/Scobol files." t nil)
+
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
 
 (autoload 'vtl-mode "vtl" nil t)
 (add-hook 'html-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'xml-mode-hook 'turn-on-vtl-mode t t)
 (add-hook 'text-mode-hook 'turn-on-vtl-mode t t)
 
-#+END_SRC
-- 단축키
+-#+END_SRC
+** 단축키
 #+begin_src emacs-lisp
     ;;shortcut
     (bind-key* "<f2>" 'recentf-open-files)
@@ -147,11 +165,9 @@ customize settings in [[file:init.el][init.el]].
     (defalias 'list-buffers 'ibuffer) ; make ibuffer default
     ;(windmove-default-keybindings 'meta)
     
-    (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-    (add-to-list 'auto-mode-alist '("\\.\\(cbl\\|pco\\|cob\\)$" . cobol-mode))
 #+end_src
 
-- 큰파일은 기본모드로
+** 큰파일은 기본모드로
 #+BEGIN_SRC emacs-lisp
   (defun my-find-file-check-make-large-file-read-only-hook ()
     "if a file is over a given size, make the buffer read only."
