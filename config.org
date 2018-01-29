@@ -34,7 +34,7 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
 
 *** 폰트설정
  #+BEGIN_SRC emacs-lisp
- (set-frame-font "Ubuntu Mono-13" nil t)
+ (set-frame-font "Ubuntu Mono-12" nil t)
  (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
  (setq-default line-spacing 1)
  #+END_SRC
@@ -726,4 +726,12 @@ Edit this list as you see fit!
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
 #+END_SRC
-
+** COBOL mode
+#+BEGIN_SRC emacs-lisp
+  (use-package cobol-mode
+    :ensure t
+    :commands (cobol-mode)
+    :mode(("\\.cob\\'" . cobol-mode)
+          ("\\.cbl\\'" . cobol-mode)
+          ("\\.cpy\\'" . cobol-mode)))
+#+END_SRC

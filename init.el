@@ -39,7 +39,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (avy which-key markdown-mode magit use-package slime auto-complete)))
+    (cobol-mode avy which-key markdown-mode magit use-package slime auto-complete)))
  '(recentf-mode t)
  '(show-paren-mode t)
  '(tab-width 4)
