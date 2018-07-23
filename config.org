@@ -32,7 +32,7 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
 (when window-system (global-prettify-symbols-mode t))
 #+END_SRC
 
-*** 폰트설정
+*** Font setting
  #+BEGIN_SRC emacs-lisp
  (set-frame-font "Monospace-10" nil t)
 ;; (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
@@ -51,7 +51,7 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-*** 타이틀에 경로표시
+*** Show path in title bar
  #+BEGIN_SRC emacs-lisp
  (setq-default frame-title-format
                '(:eval
@@ -339,6 +339,20 @@ This can be invoked using =C-M-s-k=. This keybinding makes sure you don't hit it
   (global-set-key (kbd "C-M-s-k") 'close-all-buffers)
 #+END_SRC
 
+** line numbers and programming
+Every now and then all of us feel the urge to be productive and write some code.
+In the event that this happens, the following bit of configuration makes sure that 
+we have access to relative line numbering in programming-related modes.
+I highly recommend not enabling =linum-relative-mode= globally, as it messed up 
+something like =ansi-term= for instance.
+<#+BEGIN_SRC emacs-lisp
+  (use-package linum-relative
+    :ensure t
+    :config
+      (setq linum-relative-current-symbol "")
+      (add-hook 'prog-mode-hook 'linum-relative-mode))
+<#+END_SRC
+
 ** ido and why you should use it
 Once in a while you come across a package that is:
 
@@ -448,7 +462,7 @@ And this quickly deletes a line.
   (global-set-key (kbd "C-c l k") 'kill-whole-line)
 #+END_SRC
 
-** 최근파일보기
+** Recent file
 #+begin_src emacs-lisp
     ;;shortcut
     (bind-key* "<f2>" 'recentf-open-files)
@@ -460,7 +474,7 @@ And this quickly deletes a line.
     
 #+end_src
 
-** 큰파일은 기본모드로
+** large file
 #+BEGIN_SRC emacs-lisp
   (defun my-find-file-check-make-large-file-read-only-hook ()
     "if a file is over a given size, make the buffer read only."
@@ -563,7 +577,7 @@ C-n and C-p totally work for this.
 
 * Completion
 Be it for code or prose, completion is a must.
-** auto complete 주석처리
+** auto complete
  #+BEGIN_SRC emacs-lisp
    (use-package auto-complete
      :ensure t
@@ -703,8 +717,8 @@ Edit this list as you see fit!
     (diminish 'rainbow-delimiters-mode)
     (diminish 'rainbow-mode))
 #+END_SRC
-
 * Programming
+** clojure
 #+BEGIN_SRC emacs-lisp
   (use-package clojure-mode
     :ensure t
@@ -734,4 +748,11 @@ Edit this list as you see fit!
           cider-overlays-use-font-lock t)         
     (cider-repl-toggle-pretty-printing))
 
+#+END_SRC
+** ANTLR mode
+#+BEGIN_SRC emacs-lisp
+  (use-package antlr-mode
+    :ensure t
+    :commands(antlr-mode)
+    :mode(("\\.g4\\'" . antlr-mode)))
 #+END_SRC
