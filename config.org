@@ -34,8 +34,8 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
 
 *** 폰트설정
  #+BEGIN_SRC emacs-lisp
- (set-frame-font "Ubuntu Mono-12" nil t)
- (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
+ (set-frame-font "Monospace-10" nil t)
+;; (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
  (setq-default line-spacing 1)
  #+END_SRC
 
@@ -174,6 +174,7 @@ symon can be toggled on and off with =Super + h=.
 (column-number-mode t)
 
 (global-visual-line-mode)
+(require 'diminish)
 (diminish 'visual-line-mode)
 
 (setq uniquify-buffer-name-style 'forward)
@@ -336,20 +337,6 @@ This can be invoked using =C-M-s-k=. This keybinding makes sure you don't hit it
     (interactive)
     (mapc 'kill-buffer (buffer-list)))
   (global-set-key (kbd "C-M-s-k") 'close-all-buffers)
-#+END_SRC
-
-** line numbers and programming
-Every now and then all of us feel the urge to be productive and write some code.
-In the event that this happens, the following bit of configuration makes sure that 
-we have access to relative line numbering in programming-related modes.
-I highly recommend not enabling =linum-relative-mode= globally, as it messed up 
-something like =ansi-term= for instance.
-#+BEGIN_SRC emacs-lisp
-  (use-package linum-relative
-    :ensure t
-    :config
-      (setq linum-relative-current-symbol "")
-      (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+END_SRC
 
 ** ido and why you should use it
@@ -547,6 +534,15 @@ especially lisp.
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
+
+** DAUM dictionary
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/dev/bing-dict.el/")
+  (require 'daum-dict)
+  (setq daum-dict-save-search-result t)
+  (global-set-key (kbd "C-c d") 'daum-dict-brief)
+#+END_SRC
+
 * Kill ring
 There is a lot of customization to the kill ring, and while I have not used it much before,
 I decided that it was time to change that.
@@ -605,9 +601,7 @@ great. It's easy and intuitive to use, shows its options at a keypress and much 
     :ensure t
     :config
     (setq magit-push-always-verify nil)
-    (setq git-commit-summary-max-length 50)
-    :bind
-      ("M-g" . magit-status))
+    (setq git-commit-summary-max-length 50))
 #+END_SRC
 
 * Remote editing
@@ -710,28 +704,34 @@ Edit this list as you see fit!
     (diminish 'rainbow-mode))
 #+END_SRC
 
-* 프로그래밍
-** python 인터프리터 설정
+* Programming
 #+BEGIN_SRC emacs-lisp
-  (setq python-shell-interpreter "python3")
-#+END_SRC
+  (use-package clojure-mode
+    :ensure t
+    :mode (("\\.clj\\'" . clojure-mode)
+           ("\\.edn\\'" . clojure-mode))
+    :init
+    (add-hook 'clojure-mode-hook #'yas-minor-mode)         
+    (add-hook 'clojure-mode-hook #'linum-mode)             
+    (add-hook 'clojure-mode-hook #'subword-mode)           
+    (add-hook 'clojure-mode-hook #'smartparens-mode)       
+    (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'clojure-mode-hook #'eldoc-mode)             
+    (add-hook 'clojure-mode-hook #'idle-highlight-mode))
 
-** markdown mode
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
+  (use-package cider
     :ensure t
-    :commands (markdown-mode gfm-mode)
-    :mode (("README\\.md\\'" . gfm-mode)
-           ("\\.md\\'" . markdown-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown"))
-#+END_SRC
-** COBOL mode
-#+BEGIN_SRC emacs-lisp
-  (use-package cobol-mode
-    :ensure t
-    :commands (cobol-mode)
-    :mode(("\\.cob\\'" . cobol-mode)
-          ("\\.cbl\\'" . cobol-mode)
-          ("\\.cpy\\'" . cobol-mode)))
+    :defer t
+    :init (add-hook 'cider-mode-hook #'clj-refactor-mode)
+    :diminish subword-mode
+    :config
+    (setq nrepl-log-messages t                  
+          cider-repl-display-in-current-window t
+          cider-repl-use-clojure-font-lock t    
+          cider-prompt-save-file-on-load 'always-save
+          cider-font-lock-dynamically '(macro core function var)
+          nrepl-hide-special-buffers t            
+          cider-overlays-use-font-lock t)         
+    (cider-repl-toggle-pretty-printing))
+
 #+END_SRC
