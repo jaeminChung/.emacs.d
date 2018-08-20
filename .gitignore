@@ -15,4 +15,9 @@ elpa/
 session.*
 tramp
 smex-items
+<<<<<<< HEAD
 vocabulary.org
+=======
+daum-dict/
+tutorial/
+>>>>>>> d3f58f489e8d957776974caa12c33636853b3f75
