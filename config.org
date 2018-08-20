@@ -32,9 +32,9 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
 (when window-system (global-prettify-symbols-mode t))
 #+END_SRC
 
-*** 폰트설정
+*** Font
  #+BEGIN_SRC emacs-lisp
- (set-frame-font "Ubuntu Mono-13" nil t)
+ (set-frame-font "Ubuntu Mono-11" nil t)
  (set-fontset-font t 'hangul (font-spec :name "D2Coding"))
  (setq-default line-spacing 1)
  #+END_SRC
@@ -51,7 +51,7 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-*** 타이틀에 경로표시
+*** Frame title format
  #+BEGIN_SRC emacs-lisp
  (setq-default frame-title-format
                '(:eval
@@ -344,13 +344,13 @@ In the event that this happens, the following bit of configuration makes sure th
 we have access to relative line numbering in programming-related modes.
 I highly recommend not enabling =linum-relative-mode= globally, as it messed up 
 something like =ansi-term= for instance.
-#+BEGIN_SRC emacs-lisp
+!#+BEGIN_SRC emacs-lisp
   (use-package linum-relative
     :ensure t
     :config
       (setq linum-relative-current-symbol "")
       (add-hook 'prog-mode-hook 'linum-relative-mode))
-#+END_SRC
+!#+END_SRC
 
 ** ido and why you should use it
 Once in a while you come across a package that is:
@@ -461,7 +461,7 @@ And this quickly deletes a line.
   (global-set-key (kbd "C-c l k") 'kill-whole-line)
 #+END_SRC
 
-** 최근파일보기
+** bind key recent files, other-window
 #+begin_src emacs-lisp
     ;;shortcut
     (bind-key* "<f2>" 'recentf-open-files)
@@ -473,7 +473,7 @@ And this quickly deletes a line.
     
 #+end_src
 
-** 큰파일은 기본모드로
+** large file fundamental-mode
 #+BEGIN_SRC emacs-lisp
   (defun my-find-file-check-make-large-file-read-only-hook ()
     "if a file is over a given size, make the buffer read only."
@@ -547,6 +547,15 @@ especially lisp.
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
+
+** Daum dictionary
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "daum-dict.el")
+  (require 'daum-dict)
+  (setq daum-dict-save-search-result t)
+
+  (global-set-key (kbd "C-c d") 'daum-dict-brief)
+#+END_SRC
 * Kill ring
 There is a lot of customization to the kill ring, and while I have not used it much before,
 I decided that it was time to change that.
@@ -567,7 +576,7 @@ C-n and C-p totally work for this.
 
 * Completion
 Be it for code or prose, completion is a must.
-** auto complete 주석처리
+** auto complete
  #+BEGIN_SRC emacs-lisp
    (use-package auto-complete
      :ensure t
@@ -663,12 +672,12 @@ Those are all rather self-explanatory.
 
 ** Org Bullets
 Makes it all look a bit nicer, I hate looking at asterisks.
-#+BEGIN_SRC emacs-lisp
+;#+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t
     :config
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
-#+END_SRC
+;#+END_SRC
 
 ** Easy-to-add emacs-lisp template
 Hitting tab after an "<el" in an org-mode file will create a template for elisp insertion.
@@ -710,8 +719,14 @@ Edit this list as you see fit!
     (diminish 'rainbow-mode))
 #+END_SRC
 
-* 프로그래밍
-** python 인터프리터 설정
+* Programing
+** clojure mode
+#+BEGIN_SRC emacs-lisp
+    (use-package clojure-mode
+      :ensure t
+      :mode (("\\.clj\\'" . cobol-mode)))
+#+END_SRC
+** python interpreter
 #+BEGIN_SRC emacs-lisp
   (setq python-shell-interpreter "python3")
 #+END_SRC
@@ -726,4 +741,18 @@ Edit this list as you see fit!
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
 #+END_SRC
+** antlr mode
+#+BEGIN_SRC emacs-lisp
+  (use-package antlr-mode
+    :ensure t
+    :mode (("\\.g4\\'" . antlr-mode)))
+#+END_SRC
+** cobol mode
+#+BEGIN_SRC emacs-lisp
+    (use-package cobol-mode
+      :ensure t
+      :mode (("\\.cbl\\'" . cobol-mode)
+             ("\\.cpy\\'" . cobol-mode)))
+#+END_SRC
+
 
